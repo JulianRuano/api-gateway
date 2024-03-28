@@ -1,0 +1,70 @@
+version: "3.9"
+
+services:
+
+  config-server:
+    build: ./config-server
+    ports:
+      - "8888:8888"
+    container_name: config-server
+
+  db_booking:
+    image: mariadb:11.2.3
+    restart: always
+    environment:
+      MARIADB_USER: springuser
+      MARIADB_PASSWORD: ThePassword
+      MARIADB_DATABASE: db_booking
+      MARIADB_ROOT_PASSWORD: ThePassword
+    ports:
+        - "3306:3306"
+    container_name: db_booking
+  
+  db_product:
+    image: mariadb:11.2.3
+    restart: always
+    environment:
+      MARIADB_USER: springuser
+      MARIADB_PASSWORD: ThePassword
+      MARIADB_DATABASE: db_product
+      MARIADB_ROOT_PASSWORD: ThePassword
+    ports:
+        - "3307:3307"
+    container_name: db_product
+
+  discovery-service:
+    build: ./discovery-service
+    ports:
+      - "8761:8761"
+    container_name: discovery-service
+
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    container_name: api-gateway
+
+  booking-service:
+    build: ./booking
+    ports:
+      - "8081:8081"
+    container_name: booking-service
+    depends_on:
+      - db_booking
+      - discovery-service
+      - config-server
+      - api-gateway
+  
+  product-service:
+    build: ./product
+    ports:
+      - "8082:8082"
+    container_name: product-service
+    depends_on:
+      - db_product
+      - discovery-service
+      - config-server
+      - api-gateway
+  
+
+    

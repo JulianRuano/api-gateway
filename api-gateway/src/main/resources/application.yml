@@ -1,0 +1,31 @@
+spring:
+ application:
+   name: api-gateway
+ cloud:
+   gateway:
+     mvc:
+       routes:
+         - id: product-microservice
+           uri: lb://PRODUCT-MICROSERVICE
+           predicates:
+             - Path=/product/**
+         - id: booking-microservice
+           uri: lb://BOOKING-MICROSERVICE
+           predicates:
+             - Path=/booking/**
+# security:
+#   oauth2:
+#      client:
+#        provider:
+#          keycloak:
+#            issuer-uri: http://localhost:9090/realms/mycompany-microservices-realm
+#        registration:
+#          spring-cloud-gateway-client:
+#            client-id: spring-cloud-gateway-client
+#            client-secret: eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJjMGY2ZTMwMC1jYmExLTQ0MTEtYTdmOS0yMDVlY2E0Y2FlMmYifQ.eyJleHAiOjE3MTE2NDU0MDQsImlhdCI6MTcxMTU1OTAwNCwianRpIjoiN2NlNjhlMTYtOTRmYS00MmU1LThjODYtNDg4Y2E5OTM2ZjU3IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo5MDkwL3JlYWxtcy9teWNvbXBhbnktbWljcm9zZXJ2aWNlcy1yZWFsbSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTA5MC9yZWFsbXMvbXljb21wYW55LW1pY3Jvc2VydmljZXMtcmVhbG0iLCJ0eXAiOiJJbml0aWFsQWNjZXNzVG9rZW4ifQ.Q5wPR1B4e1iHDOpb3oEGu5T_miqUxrIDqWRxHqQ9BFGgysi_Hrgv8GO9nmTrj_0gdrAq_l7upp0qXV3lsmNi7A
+#            provider: keycloak
+#            authorization-grant-type: authorization_code
+#            redirect-uri: http://localhost:8080/login/oauth2/code/spring-cloud-gateway-client
+eureka:
+ instance:
+   instance-id: ${spring.application.name}:${random.uuid}
