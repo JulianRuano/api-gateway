@@ -12,8 +12,6 @@ services:
     ports:
         - "3306:3306"
     container_name: db_booking
-    networks:
-      - backend
   
   db_product:
     image: mariadb:11.2.3
@@ -24,27 +22,20 @@ services:
       MARIADB_DATABASE: db_product
       MARIADB_ROOT_PASSWORD: ThePassword
     ports:
-        - "3310:3310"
+        - "3307:3306"
     container_name: db_product
-    networks:
-      - backend
 
   discovery-service:
     build: ./discovery-service
     ports:
       - "8761:8761"
     container_name: discovery-service
-    networks:
-      - backend
-
 
   api-gateway:
     build: ./api-gateway
     ports:
       - "8080:8080"
     container_name: api-gateway
-    networks:
-      - backend
 
   booking-service:
     build: ./booking
@@ -59,8 +50,6 @@ services:
       - db_booking
       - discovery-service
       - api-gateway
-    networks:
-      - backend
   
   product-service:
     build: ./product
@@ -75,10 +64,26 @@ services:
       - db_product
       - discovery-service
       - api-gateway
-    networks:
-      - backend
 
-networks:
-  backend:
+  file-microservice:
+    build: ./fileStore
+    ports:
+      - "8083"
+    container_name: file-microservice
+    depends_on:
+      - discovery-service
+      - api-gateway
+    volumes:
+      - image_volume:/mnt/image_volume/
 
+  nginx:
+    image: nginx:latest
+    container_name: nginx_container
+    ports:
+      - "8084:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - image_volume:/usr/share/nginx/html
     
+volumes:
+  image_volume:

@@ -1,10 +1,10 @@
-package com.singlecode.configserver;
+package com.fileStore;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ConfigServerApplicationTests {
+class FileStoreApplicationTests {
 
 	@Test
 	void contextLoads() {
