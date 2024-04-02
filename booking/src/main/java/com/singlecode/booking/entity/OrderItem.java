@@ -1,4 +1,6 @@
-package com.stock.entity;
+package com.singlecode.booking.entity;
+
+import java.math.BigDecimal;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,16 +12,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "stock")
-@NoArgsConstructor
+@Table(name = "order_item")
 @Getter
 @Setter
-public class StockEntity {
-
+@NoArgsConstructor
+public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String code;
-    private Integer quantity;
-    
+    private BigDecimal price;
+    private Integer orderQty;
 }

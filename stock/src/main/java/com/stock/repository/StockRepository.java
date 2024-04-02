@@ -1,11 +1,11 @@
-package com.stockmocroservice.repository;
+package com.stock.repository;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-import com.stockmocroservice.entity.StockEntity;
+import com.stock.entity.StockEntity;
 
 public interface StockRepository  extends JpaRepository<StockEntity, Long>{
     Optional<StockEntity> findByCode(String code);
