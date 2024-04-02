@@ -25,6 +25,18 @@ services:
         - "3307:3306"
     container_name: db_product
 
+  db_stock:
+    image: mariadb:11.2.3
+    restart: always
+    environment:
+      MARIADB_USER: springuser
+      MARIADB_PASSWORD: ThePassword
+      MARIADB_DATABASE: db_stock
+      MARIADB_ROOT_PASSWORD: ThePassword
+    ports:
+        - "3308:3306"
+    container_name: db_stock
+
   discovery-service:
     build: ./discovery-service
     ports:
@@ -65,10 +77,24 @@ services:
       - discovery-service
       - api-gateway
 
+  stock-mocroservice:
+    build: ./stock
+    ports:
+      - "8083"
+    container_name: stock-microservice
+    environment:
+      - DB_URL=jdbc:mariadb://db_stock:3306/db_stock
+      - DB_USER=springuser
+      - DB_PASS=ThePassword
+    depends_on:
+      - db_stock
+      - discovery-service
+      - api-gateway
+
   file-microservice:
     build: ./fileStore
     ports:
-      - "8083"
+      - "8084"
     container_name: file-microservice
     depends_on:
       - discovery-service
@@ -80,7 +106,7 @@ services:
     image: nginx:latest
     container_name: nginx_container
     ports:
-      - "8084:80"
+      - "8085:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - image_volume:/usr/share/nginx/html

@@ -1,10 +1,10 @@
-package com.stockmocroservice;
+package com.stock;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class StockMocroserviceApplicationTests {
+class StockApplicationTests {
 
 	@Test
 	void contextLoads() {
