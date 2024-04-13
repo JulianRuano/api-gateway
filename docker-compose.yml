@@ -110,6 +110,35 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - image_volume:/usr/share/nginx/html
-    
+  
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.2
+    volumes:
+      - ./keycloak-server/realm-export.json:/tmp/realm-export.json
+    container_name: keycloak
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - DB_VENDOR=POSTGRES
+      - DB_ADDR=postgres
+      - DB_DATABASE=keycloak
+      - DB_USER=keycloak
+      - DB_PASSWORD=password
+    command: ["start-dev", "--import-realm"]
+    ports:
+      - "9090:8080"
+    depends_on:
+      - postgres
+  
+  postgres:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+  
 volumes:
   image_volume:
+  postgres_data:
