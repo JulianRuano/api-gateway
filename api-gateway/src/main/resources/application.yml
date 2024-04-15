@@ -3,7 +3,6 @@ spring:
    name: api-gateway
  cloud:
    gateway:
-      mvc:
        routes:
          - id: product-microservice
            uri: lb://PRODUCT-MICROSERVICE
@@ -20,31 +19,48 @@ spring:
            predicates:
             - Path=/file/**
 
-# security:
-#    oauth2:
-#      resourceserver:
-#        jwt:
-#          jwk-set-uri: http://keycloak:8080/realms/mycompany-microservices-realm/protocol/openid-connect/certs
-#          issuer-uri: http://keycloak:8080/realms/mycompany-microservices-realm
+         - id: discovery-service
+           uri: http://discovery-service:8761
+           predicates:
+              - Path=/eurka/web
+           filters:
+              - SetPath=/
+
+         - id: discovery-service-static
+           uri: http://discovery-service:8761
+           predicates:
+              - Path=/eurka/**
+
+       default-filters:
+          - SaveSession
+          - TokenRelay
 
  security:
    oauth2:
-     resourceserver:
-       jwt:
-         issuer-uri: http://localhost:9090/realms/springboot-microservice-realm
-         jwk-set-uri: http://keycloak:8080/realms/mycompany-microservices-realm/protocol/openid-connect/certs
+     client:
+      provider:
+        keycloak:
+          issuer-uri: http://localhost:8090/realms/oauth2-realm
+      registration:
+        keycloak:
+          provider: keycloak
+          client-id: microservices_client
+          client-secret: yshlFWZoyk3ZsjKusbL691gA76nkD6tA
+          scope: openid
+          authorization-grant-type: authorization_code
+          redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
+
+
+
+
 eureka:
  client:
   service-url:
-   defaultZone: http://discovery-service:8761/eureka/
+   defaultZone: http://julian:password@discovery-service:8761/eureka/
  instance:
    instance-id: ${spring.application.name}:${random.uuid}
 
 server:
   port: 8080 
 
-jwt:
-  auth:
-    converter:
-      principle-attribute: preferred_username
-      resource-id: spring-cloud-gateway-client
+
