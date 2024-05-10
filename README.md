@@ -15,7 +15,7 @@ La API Gateway está configurada para enrutar las solicitudes a tres microservic
 
 2. **Booking Microservice**: Maneja las solicitudes relacionadas con reservas. Todas las rutas que comiencen con `/booking/**` serán enrutadas a este microservicio.
 
-3. **File Microservice**: Maneja las solicitudes relacionadas con archivos. Todas las rutas que comiencen con `/file/**` serán enrutadas a este microservicio.
+3. **File Microservice**: Maneja las solicitudes relacionadas con archivos configurando un servidor nginx para exponer los archivos. Todas las rutas que comiencen con `/file/**` serán enrutadas a este microservicio.
 
 La configuración de enrutamiento se encuentra en el archivo `application.properties`
 
