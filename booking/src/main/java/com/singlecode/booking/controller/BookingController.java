@@ -21,7 +21,7 @@ public class BookingController {
 
     @PostMapping("/order")
     public String saveOrder(@RequestBody OrderDTO orderDTO) {
-
+    
         Order order = new Order();
         order.setOrderNo(UUID.randomUUID().toString());
         order.setOrderItems(orderDTO.getOrderItems());
