@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stock.entity.StockEntity;
@@ -23,6 +22,19 @@ public class StockController {
     @Autowired
     private StockRepository stockRepository;
 
+    @GetMapping("/check/{code}")
+    public ResponseEntity<String> checkStock(@PathVariable String code) {
+        Optional<StockEntity> stock = stockRepository.findByCode(code);
+
+        stock.orElseThrow(() -> new RuntimeException("Stock not found"+ code));
+
+        if(stock.get().getQuantity() > 0) {
+            return ResponseEntity.ok("Stock available");
+        } else {
+            return ResponseEntity.ok("Stock not available");
+        }
+    }
+
     @GetMapping("/{code}")
     public ResponseEntity<StockEntity> strockAvailability(@PathVariable String code) {
         Optional<StockEntity> stock = stockRepository.findByCode(code);
@@ -33,7 +45,7 @@ public class StockController {
     }
 
     @PutMapping("/{code}/{quantity}")
-    public ResponseEntity<StockEntity> updateStock(@RequestParam String code, @RequestParam Integer quantity) {
+    public ResponseEntity<StockEntity> updateStock(@PathVariable String code, @PathVariable Integer quantity) {
         Optional<StockEntity> stock = stockRepository.findByCode(code);
 
         stock.orElseThrow(() -> new RuntimeException("Stock not found"+ code));
@@ -46,7 +58,7 @@ public class StockController {
     }
 
     @PostMapping("/{code}/{quantity}")
-    public ResponseEntity<StockEntity> createStock(@RequestParam String code, @RequestParam Integer quantity) {
+    public ResponseEntity<StockEntity> createStock(@PathVariable String code, @PathVariable Integer quantity) {
         StockEntity stock = new StockEntity();
         stock.setCode(code);
         stock.setQuantity(quantity);
