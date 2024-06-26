@@ -49,11 +49,11 @@ services:
       - "8080:8080"
     container_name: api-gateway
 
-  booking-service:
+  booking-microservice:
     build: ./booking
     ports:
       - "8081"
-    container_name: booking-service
+    container_name: booking-microservice
     environment:
       - DB_URL=${DB_URL_BOOKING}
       - DB_USER=${MARIADB_USER}
@@ -63,11 +63,11 @@ services:
       - discovery-service
       - api-gateway
   
-  product-service:
+  product-microservice:
     build: ./product
     ports:
       - "8082"
-    container_name: product-service
+    container_name: product-microservice
     environment:
       - DB_URL=${DB_URL_PRODUCT}
       - DB_USER=${MARIADB_USER}
