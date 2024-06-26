@@ -1,6 +1,8 @@
 # API Gateway
 
-Esta es una API Gateway construida con Spring Cloud Gateway que actúa como punto de entrada único para las solicitudes a los microservicios de la aplicación. Utiliza el equilibrio de carga para distribuir el tráfico entre las instancias de cada microservicio.
+Esta es una API Gateway construida con Spring Cloud Gateway que actúa como punto de entrada único para las solicitudes a los microservicios de la aplicación. Utiliza un balanceador de carga para distribuir el tráfico entre las instancias de cada microservicio.
+
+Configura un contenedor de NGINX utilizando Docker Compose. El contenedor de NGINX está configurado para servir archivos estáticos (imágenes) desde un volumen de Docker, y expone el servidor web en el puerto 8085 de la máquina host.
 
 ![](https://res.cloudinary.com/dilrruxyx/image/upload/v1719362272/Untitled-2024-06-25-1533_vefchr.svg)
 
