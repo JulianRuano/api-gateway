@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,15 +36,15 @@ public class ProductController {
         return productRepository.save(product);
     }
 
-    @PutMapping("/update")
+    @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ProductEntity updateProduct(@RequestBody ProductEntity product) {
+    public ProductEntity updateProduct(@PathVariable String id, @RequestBody ProductEntity product) {
         return productRepository.save(product);
     }
     
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteProduct(@RequestBody ProductEntity product) {
-        productRepository.delete(product);
+    public void deleteProduct(@PathVariable String id) {
+        productRepository.deleteById(id);
     }
 }
