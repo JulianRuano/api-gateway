@@ -1,6 +1,7 @@
 package ms.order.entity;
 
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,18 +16,18 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class OrderItem {
+public class OrderItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private Order order;
+    private OrderEntity order;
 
-    @ManyToOne  
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
-    private Product product;
+    private ProductEntity product;
     
     private Integer quantity;
 

@@ -20,7 +20,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Order {
+public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,7 +29,7 @@ public class Order {
     private Date orderDate;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
-    private List<OrderItem> orderItems;
+    private List<OrderItemEntity> orderItems;
 
     // Get the total quantity of the order
     public Integer getTotal() {     

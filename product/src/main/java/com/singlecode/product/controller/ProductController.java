@@ -1,37 +1,49 @@
 package com.singlecode.product.controller;
 
 import org.springframework.web.bind.annotation.RestController;
-
 import com.singlecode.product.entity.ProductEntity;
 import com.singlecode.product.repository.ProductRepositoty;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RestController
 @RequestMapping("/product")
+@RequiredArgsConstructor
 public class ProductController {
 
-    @Autowired
-    private ProductRepositoty productRepository;
+    
+    private final ProductRepositoty productRepository;
 
-    @GetMapping("/")
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<ProductEntity> getAllProducts() {
         return productRepository.findAll();
     }
 
-    @PostMapping("/")
-    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
     public ProductEntity createProduct(@RequestBody ProductEntity product) {
         return productRepository.save(product);
     }
+
+    @PutMapping("/update")
+    @ResponseStatus(HttpStatus.OK)
+    public ProductEntity updateProduct(@RequestBody ProductEntity product) {
+        return productRepository.save(product);
+    }
     
+    @DeleteMapping("/delete")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProduct(@RequestBody ProductEntity product) {
+        productRepository.delete(product);
+    }
 }
