@@ -1,7 +1,5 @@
 package com.stock.entity;
 
-import java.util.UUID;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
@@ -21,7 +19,7 @@ public class ProductEntity {
 
     @Id
     @Column(name = "product_id")
-    private String id = UUID.randomUUID().toString();
+    private String id;
 
     private String name;
 
