@@ -7,11 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.stock.dto.StockDto;
 import com.stock.entity.StockEntity;
 import com.stock.repository.StockRepository;
+
 import org.springframework.web.bind.annotation.GetMapping;
 
 
@@ -25,7 +28,6 @@ public class StockController {
     @GetMapping("/check/{code}")
     public ResponseEntity<String> checkStock(@PathVariable String code) {
         Optional<StockEntity> stock = stockRepository.findByCode(code);
-
         stock.orElseThrow(() -> new RuntimeException("Stock not found"+ code));
 
         if(stock.get().getQuantity() > 0) {
@@ -38,31 +40,26 @@ public class StockController {
     @GetMapping("/{code}")
     public ResponseEntity<StockEntity> strockAvailability(@PathVariable String code) {
         Optional<StockEntity> stock = stockRepository.findByCode(code);
-
         stock.orElseThrow(() -> new RuntimeException("Stock not found"+ code));
-
         return ResponseEntity.ok(stock.get());
     }
 
-    @PutMapping("/{code}/{quantity}")
-    public ResponseEntity<StockEntity> updateStock(@PathVariable String code, @PathVariable Integer quantity) {
-        Optional<StockEntity> stock = stockRepository.findByCode(code);
-
-        stock.orElseThrow(() -> new RuntimeException("Stock not found"+ code));
-
-        stock.get().setQuantity(stock.get().getQuantity() - quantity);
-
+    @PutMapping("/")
+    public ResponseEntity<StockEntity> updateStock(@RequestBody StockDto stockDto) {
+        Optional<StockEntity> stock = stockRepository.findByCode(stockDto.getCode());
+        stock.orElseThrow(() -> new RuntimeException("Stock not found"+ stockDto.getCode()));
+        stock.get().setQuantity(stock.get().getQuantity() - stockDto.getQuantity());
         stockRepository.save(stock.get());
 
         return ResponseEntity.ok(stock.get());
     }
 
-    @PostMapping("/{code}/{quantity}")
-    public ResponseEntity<StockEntity> createStock(@PathVariable String code, @PathVariable Integer quantity) {
+    @PostMapping("/")
+    public ResponseEntity<StockEntity> createStock(@RequestBody StockDto stockDto) {
         StockEntity stock = new StockEntity();
-        stock.setCode(code);
-        stock.setQuantity(quantity);
 
+        stock.setCode(stockDto.getCode());
+        stock.setQuantity(stockDto.getQuantity());
         stockRepository.save(stock);
 
         return ResponseEntity.ok(stock);
