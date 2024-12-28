@@ -1,6 +1,7 @@
 package ms.order.entity;
 
 
+import java.util.List;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
@@ -24,7 +25,7 @@ public class ProductEntity {
     private Double price;
 
     @OneToMany(mappedBy = "product")
-    private OrderItemEntity orderItem;
+    private List<OrderItemEntity> orderItems;
 
     public void updatePrice(Double price) {
         if (price < 0.0) {
