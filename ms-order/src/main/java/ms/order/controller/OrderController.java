@@ -1,5 +1,7 @@
 package ms.order.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import ms.order.dto.OrderDto;
+import ms.order.dto.OrderItemDto;
 import ms.order.entity.OrderEntity;
 import ms.order.entity.OrderItemEntity;
 import ms.order.repository.IOrderRepository;
@@ -23,7 +26,7 @@ public class OrderController {
     private final IOrderRepository orderRepository;
 
     @PostMapping("/create")
-    public ResponseEntity<OrderEntity> createProduct(@RequestBody OrderDto order) {
+    public ResponseEntity<OrderDto> createProduct(@RequestBody OrderDto order) {
         OrderEntity newOrder = new OrderEntity();
         newOrder.setOrderNo(order.getOrderNo());
         newOrder.setOrderDate(order.getOrderDate());
@@ -36,12 +39,26 @@ public class OrderController {
             newOrder.getOrderItems().add(orderItem);
         });
 
-        return ResponseEntity.ok(orderRepository.save(newOrder));
-       
+        orderRepository.save(newOrder);
+        
+        return ResponseEntity.ok(order);  
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Iterable<OrderEntity>> getAllOrders() {
-        return ResponseEntity.ok(orderRepository.findAll());
+    public ResponseEntity<Iterable<OrderDto>> getAllOrders() {
+        List<OrderEntity> orders = orderRepository.findAll();
+        
+        List<OrderDto> orderDtos = orders.stream().map(order -> {
+            OrderDto orderDto = new OrderDto();
+            orderDto.setId(order.getId());
+            orderDto.setOrderNo(order.getOrderNo());
+            orderDto.setOrderDate(order.getOrderDate());
+            orderDto.setOrderItems(order.getOrderItems().stream().map(orderItem -> {
+                return new OrderItemDto(orderItem.getProduct().getId(), orderItem.getQuantity());
+            }).toList());
+            return orderDto;
+        }).toList();
+
+        return ResponseEntity.ok(orderDtos);
     }
 }

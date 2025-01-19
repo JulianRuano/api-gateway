@@ -1,6 +1,7 @@
 package ms.order.entity;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class OrderEntity {
     private Date orderDate;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
-    private List<OrderItemEntity> orderItems;
+    private List<OrderItemEntity> orderItems = new ArrayList<>();
 
     // Get the total quantity of the order
     public Integer getTotal() {     
