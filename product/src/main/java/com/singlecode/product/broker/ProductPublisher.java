@@ -17,22 +17,26 @@ public class ProductPublisher implements ProductEventPublisher {
 
     @Override
     public void publishProductCreated(ProductDto product) {
+        ProductEvent productEvent = new ProductEvent(product, ProductEventType.CREATED);
         System.out.println("Publishing product created event: " + product.getId() + " - " + product.getName());
-        rabbitTemplate.convertAndSend(RabbitConfig.PRODUCT_EXCHANGE, RabbitConfig.ROUTING_KEY_PRODUCT_CREATED, product);
+        rabbitTemplate.convertAndSend(RabbitConfig.PRODUCT_EXCHANGE, "", productEvent);
     }
 
     @Override
     public void publishProductUpdated(ProductDto product) {
+        ProductEvent  productEvent = new ProductEvent(product, ProductEventType.UPDATED);
         System.out.println("Publishing product updated event: " + product);
-        rabbitTemplate.convertAndSend(RabbitConfig.PRODUCT_EXCHANGE, RabbitConfig.ROUTING_KEY_PRODUCT_UPDATED, product);
+        rabbitTemplate.convertAndSend(RabbitConfig.PRODUCT_EXCHANGE, "", productEvent);
     }
 
     @Override
     public void publishProductDeleted(String productId) {
+        ProductDto product = new ProductDto();
+        product.setId(productId);
+
+        ProductEvent productEvent = new ProductEvent(product, ProductEventType.DELETED);
         System.out.println("Publishing product deleted event: " + productId);
-        rabbitTemplate.convertAndSend(RabbitConfig.PRODUCT_EXCHANGE, RabbitConfig.ROUTING_KEY_PRODUCT_DELETED, productId);
+        rabbitTemplate.convertAndSend(RabbitConfig.PRODUCT_EXCHANGE, "", productEvent);
     }
-
-
     
 }
