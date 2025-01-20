@@ -4,7 +4,7 @@ Esta es una API Gateway construida con Spring Cloud Gateway que actúa como punt
 
 Configura un contenedor de NGINX utilizando Docker Compose. El contenedor de NGINX está configurado para servir archivos estáticos (imágenes) desde un volumen de Docker, y expone el servidor web en el puerto 8085 de la máquina host.
 
-![](https://res.cloudinary.com/dilrruxyx/image/upload/v1719362272/Untitled-2024-06-25-1533_vefchr.svg)
+![](https://res.cloudinary.com/dilrruxyx/image/upload/v1737343421/ms_jfme3w.svg)
 
 ## Requisitos
 
