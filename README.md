@@ -17,9 +17,9 @@ La API Gateway está configurada para enrutar las solicitudes a tres microservic
 
 1. **Product Microservice**: Todas las rutas que comiencen con `/product/**` serán enrutadas a este microservicio.
 
-2. **Booking Microservice**: Todas las rutas que comiencen con `/booking/**` serán enrutadas a este microservicio.
+2. **Order Microservice**: Todas las rutas que comiencen con `/booking/**` serán enrutadas a este microservicio.
 
-3. **Stock-microservice**: Todas las rutas que comiencen con `/stock/**` serán enrutadas a este microservicio.
+3. **Stock Microservice**: Todas las rutas que comiencen con `/stock/**` serán enrutadas a este microservicio.
 
 3. **File Microservice**: Todas las rutas que comiencen con `/file/**` serán enrutadas a este microservicio.
 
